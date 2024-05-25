@@ -3,8 +3,6 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 
 const Users = () => {
-  const [users, setUsers] = useState([]);
-  const [search, setSearch] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
 
   useEffect(() => {
@@ -14,7 +12,6 @@ const Users = () => {
           "https://jsonplaceholder.typicode.com/posts"
         );
         console.log("response", response);
-        setUsers(response.data);
         setFilteredUsers(response.data);
       } catch (error) {
         console.log(error);
@@ -33,42 +30,18 @@ const Users = () => {
       name: "Body",
       selector: (row) => row.body,
     },
-    {
-      name: "Action",
-      cell: (row) => (
-        <button
-          className="btn btn-primary"
-          onClick={() => alert(row.alpha2Code)}
-        >
-          Edit
-        </button>
-      ),
-    },
   ];
 
   return (
-    <DataTable
-      columns={columns}
-      data={filteredUsers}
-      pagination
-      //   fixedHeader
-      //   fixedHeaderScrollHeight="450px"
-      //   selectableRows
-      //   selectableRowsHighlight
-      highlightOnHover
-      // actions={<button className='btn btn-sm btn-info'>Export</button>}
-      //   subHeader
-    //   subHeaderComponent={
-    //     <input
-    //       type="text"
-    //       placeholder="Search here"
-    //       className="w-25 form-control"
-    //       value={search}
-    //       onChange={(e) => setSearch(e.target.value)}
-    //     />
-    //   }
-      //   subHeaderAlign="right"
-    />
+    <div className="container my-5">
+      <DataTable
+        columns={columns}
+        data={filteredUsers}
+        fixedHeader
+        title="React-Data-Table-Component Tutorial."
+        pagination
+      />
+    </div>
   );
 };
 
