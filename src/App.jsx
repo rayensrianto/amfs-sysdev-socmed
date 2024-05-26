@@ -21,7 +21,7 @@ function App() {
       <header className="admin-header">
         <h1>
           <Link to="/" className="dashboard-link text-white">
-            Sossmedd
+            De Sosmeds 🤷‍♂️
           </Link>
         </h1>
       </header>
