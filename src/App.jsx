@@ -1,24 +1,43 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SideBar from "./Sidebar";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./views/Home";
-import Users from "./views/Users";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  Navigate,
+} from "react-router-dom";
+import "./assets/styles/Dashboard.css";
+import UsersPage from "./components/User";
+import PostsPage from "./components/Posts";
+import PostDetail from "./components/PostDetail";
+import AlbumsPage from "./components/Albums";
+import AlbumsDetail from "./components/AlbumDetail";
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <div className="d-flex">
-          <div className="col-auto"></div>
-          <SideBar />
+    <Router>
+      <header className="admin-header">
+        <h1>
+          <Link to="/" className="dashboard-link text-white">
+            Sossmedd
+          </Link>
+        </h1>
+      </header>
+      <div className="main-content">
+        <div className="page-content">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/users" element={<Users />} />
+            <Route path="/" exact element={<UsersPage />} />
+            <Route path="/users" element={<UsersPage />} />
+            <Route path="/posts/:userId" element={<PostsPage />} />
+            <Route path="/post/:postId" element={<PostDetail />} />
+            <Route path="/albums/:userId" element={<AlbumsPage />} />
+            <Route path="/photos/:albumId" element={<AlbumsDetail />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
-      </BrowserRouter>
-    </>
+      </div>
+    </Router>
   );
 }
 
