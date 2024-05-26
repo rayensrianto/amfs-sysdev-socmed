@@ -13,6 +13,7 @@ import PostsPage from "./components/Posts";
 import PostDetail from "./components/PostDetail";
 import AlbumsPage from "./components/Albums";
 import AlbumsDetail from "./components/AlbumDetail";
+import PhotoDetail from "./components/PhotoDetail";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/post/:postId" element={<PostDetail />} />
             <Route path="/albums/:userId" element={<AlbumsPage />} />
             <Route path="/photos/:albumId" element={<AlbumsDetail />} />
+            <Route path="/photo/:photoId" element={<PhotoDetail />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
