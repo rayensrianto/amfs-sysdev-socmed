@@ -30,18 +30,30 @@ const PostsPage = () => {
   };
 
   const handleAddPost = () => {
-    addPost({ ...newPost, userId }).then((response) =>
-      setPosts([response.data, ...posts])
-    );
+    addPost({ ...newPost, userId }).then((response) => {
+      setPosts([response.data, ...posts]);
+      setNewPost({ title: "", body: "" }); // Clear the input fields after adding
+    });
   };
 
   const handleUpdatePost = () => {
-    updatePost(editPost.id, editPost).then((response) => {
-      setPosts(
-        posts.map((post) => (post.id === editPost.id ? response.data : post))
-      );
-      closeModal();
-    });
+    console.log("Updating post with data:", editPost);
+    updatePost(editPost.id, editPost)
+      .then((response) => {
+        console.log("API response:", response);
+        setPosts(
+          posts.map((post) => (post.id === editPost.id ? response.data : post))
+        );
+        closeModal();
+      })
+      .catch((error) => {
+        console.error("Error updating post:", error);
+        // Fallback to local update
+        setPosts(
+          posts.map((post) => (post.id === editPost.id ? editPost : post))
+        );
+        closeModal();
+      });
   };
 
   const handleDeletePost = (postId) => {
@@ -52,6 +64,7 @@ const PostsPage = () => {
 
   const openModal = (postId) => {
     const post = posts.find((post) => post.id === postId);
+    console.log("Opening modal for post:", post);
     setEditPost(post);
     setShowModal(true);
   };
@@ -71,17 +84,15 @@ const PostsPage = () => {
           View Details
         </Link>
         <div className="button-container">
-          <div>
-            <button className="edit-button" onClick={() => openModal(post.id)}>
-              Edit
-            </button>
-            <button
-              className="delete-button"
-              onClick={() => handleDeletePost(post.id)}
-            >
-              Delete
-            </button>
-          </div>
+          <button className="edit-button" onClick={() => openModal(post.id)}>
+            Edit
+          </button>
+          <button
+            className="delete-button"
+            onClick={() => handleDeletePost(post.id)}
+          >
+            Delete
+          </button>
         </div>
       </div>
     ));
@@ -89,50 +100,48 @@ const PostsPage = () => {
   return (
     <div>
       <div className="add-post-container">
-        <div className="add-post-container2">
-          <h2>Post</h2>
-          <div className="input-group">
-            <textarea
-              placeholder="Title"
-              style={{
-                width: "calc(100% - 80px)",
-                minHeight: "50px",
-                marginBottom: "10px",
-                marginRight: "10px",
-                border: "none",
-                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-              }}
-              onChange={(e) =>
-                setNewPost({ ...newPost, title: e.target.value })
-              }
-            />
-            <textarea
-              placeholder="Body"
-              style={{
-                width: "calc(100% - 80px)",
-                minHeight: "100px",
-                marginBottom: "10px",
-                border: "none",
-                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-              }}
-              onChange={(e) => setNewPost({ ...newPost, body: e.target.value })}
-            />
-          </div>
-          <button
-            className="add-post-button"
+        <h2>Post</h2>
+        <div className="input-group">
+          <textarea
+            placeholder="Title"
+            value={newPost.title}
             style={{
-              width: "100px",
-              height: "40px",
-              alignSelf: "flex-end",
+              width: "calc(100% - 80px)",
+              minHeight: "50px",
+              marginBottom: "10px",
               marginRight: "10px",
-              boxShadow:
-                "0px 4px 8px rgba(0, 0, 0, 0.2)" /* Adjust shadow size */,
+              border: "none",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
             }}
-            onClick={handleAddPost}
-          >
-            Save
-          </button>
+            onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
+          />
+          <textarea
+            placeholder="Body"
+            value={newPost.body}
+            style={{
+              width: "calc(100% - 80px)",
+              minHeight: "100px",
+              marginBottom: "10px",
+              border: "none",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+            }}
+            onChange={(e) => setNewPost({ ...newPost, body: e.target.value })}
+          />
         </div>
+        <button
+          className="add-post-button"
+          style={{
+            width: "100px",
+            height: "40px",
+            alignSelf: "flex-end",
+            marginRight: "10px",
+            boxShadow:
+              "0px 4px 8px rgba(0, 0, 0, 0.2)" /* Adjust shadow size */,
+          }}
+          onClick={handleAddPost}
+        >
+          Save
+        </button>
       </div>
       <div className="posts-container">{displayPosts}</div>
       {/* Pagination */}
